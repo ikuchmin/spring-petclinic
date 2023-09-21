@@ -13,8 +13,7 @@ services:
       - MYSQL_DATABASE=petclinic
     volumes:
       - "./conf.d:/etc/mysql/conf.d:ro"
-    profiles:
-    - mysql
+
   postgres:
     image: postgres:15.3
     ports:
@@ -23,5 +22,14 @@ services:
       - POSTGRES_PASSWORD=petclinic
       - POSTGRES_USER=petclinic
       - POSTGRES_DB=petclinic
-    profiles:
-    - postgres
+
+  redpanda:
+    image: redpandadata/redpanda:latest
+    ports:
+      - "9092:9092"
+      - "9644:9644"
+
+  mongodb:
+    image: mongo:6.0
+    ports:
+      - '27017:27017'
