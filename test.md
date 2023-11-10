@@ -1,3 +1,5 @@
+UPDATE vets SET salary = floor(random() * (10000-5000+1) + 5000)::int;
+
 #### Получение списка ветеренаров
 
 ```bash
