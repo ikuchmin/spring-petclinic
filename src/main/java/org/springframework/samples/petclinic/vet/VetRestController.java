@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/rest/vet")
+@RequestMapping("/api/vet")
 public class VetRestController {
 
 	private final VetRepository vetRepository;
