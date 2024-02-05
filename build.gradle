@@ -33,6 +33,8 @@ dependencies {
   runtimeOnly 'com.h2database:h2'
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.flywaydb:flyway-core'
 }
 
 tasks.named('test') {
