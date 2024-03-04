@@ -1,0 +1,17 @@
+postgresql:
+  enabled: true
+  auth:
+    username: root
+    password: root
+    database: spring-petclinic
+  primary:
+    service:
+      type: LoadBalancer
+      nodePorts:
+        postgresql: 30543
+kafka:
+  enabled: true
+  service:
+    type: LoadBalancer
+    nodePorts:
+      client: 30542
