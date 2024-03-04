@@ -38,7 +38,7 @@ Manifest файлы. Но все примеры в статьях огранич
 
 `$ helm create petclinic`
 
-![](/Users/ikuchmin/Sources/spring-projects/spring-petclinic/article/helm_init_tree.png)
+![](https://github.com/ikuchmin/spring-petclinic/blob/2d674e8aa3858cee2940d26c3403b5971e914125/article/helm_init_tree.png)
 
 Helm нам сгенерил шаблон с множеством файлов. Идем в Helm документацию разберемся что за файлы:
 
@@ -113,7 +113,7 @@ _То что Amplicode для Docker Compose делает из коробки, �
 возвращаемся на страницу описания пакета [ArtifactHub Bitnami PostgreSQL](https://artifacthub.io/packages/helm/bitnami/postgresql). Внимательнейшим образом
 читаем страницу с параметрами (там их не один десяток), а под ней еще и документация:
 
-![](/Users/ikuchmin/Sources/spring-projects/spring-petclinic/article/helm_postgresql_param.png)
+![](https://github.com/ikuchmin/spring-petclinic/blob/2d674e8aa3858cee2940d26c3403b5971e914125/article/helm_postgresql_param.png)
 
 Изучив документацию, правим `values.yaml` (предварительно полностью
 его почистив), добавляем в пустой файл:
@@ -151,7 +151,7 @@ NodePort, LoadBalancer, Ingress. Осталось выбрать тот что �
 закрадывается мысль, помниться в Bitnami для PostgreSQL была таблица с огромным количеством парамтреов,
 давайте посмотрим на нее еще раз на предмет NodePort и LoadBalancer.
 
-![](/Users/ikuchmin/Sources/spring-projects/spring-petclinic/article/helm_postgresql_type.png)
+![](https://github.com/ikuchmin/spring-petclinic/blob/2d674e8aa3858cee2940d26c3403b5971e914125/article/helm_postgresql_type.png)
 
 Выясняется, что образы Bitnami поддерживают возможность определения service type через параметры.
 Отлично, открываем values.yaml и правим нашу конфигурацию PostgreSQL:
