@@ -2,7 +2,10 @@
 
 ### Пререквизиты
 
-1. Остановить compose, удалить все storages и запустить Compose
+1. Остановить compose со всеми сервисами, удалить все storages
+2. Откатить все изменения
+3. Создать на два сервиса pg, pgAdmin и запустить приложение, которое стартанет Compose, удалить compose
+2. Переоткрыть проект
 
 
 
@@ -28,6 +31,8 @@ Spring, Spring Data JPA/JDBC/Mongo, Spring Kafka, MapStruct, Lombok, Liquibase, 
 **Spring Data method generation** - ускоряет написание derived методов, уменьшает коливество ошибок, всегда можно сконвертировать в JPQL
 
 **JPQL support** - ну и естественно JPQL support
+
+Навигация к Endpoint
 
 **Также ожидаем**
 
