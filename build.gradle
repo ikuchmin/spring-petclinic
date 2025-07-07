@@ -54,6 +54,8 @@ dependencies {
   testImplementation 'org.testcontainers:mysql'
   checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:${springJavaformatCheckstyleVersion}"
   checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
+  compileOnly 'org.mapstruct:mapstruct:1.6.0'
+  annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.0'
 }
 
 tasks.named('test') {

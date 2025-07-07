@@ -19,10 +19,13 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository class for <code>Vet</code> domain objects All method names are compliant
@@ -35,7 +38,7 @@ import java.util.Collection;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface VetRepository extends Repository<Vet, Integer> {
+public interface VetRepository extends Repository<Vet, Integer>, JpaSpecificationExecutor<Vet> {
 
 	/**
 	 * Retrieve all <code>Vet</code>s from the data store.
@@ -55,4 +58,15 @@ public interface VetRepository extends Repository<Vet, Integer> {
 	@Cacheable("vets")
 	Page<Vet> findAll(Pageable pageable) throws DataAccessException;
 
+	Optional<Vet> findById(Integer id);
+
+	List<Vet> findAllById(Iterable<Integer> ids);
+
+	Vet save(Vet entity);
+
+	List<Vet> saveAll(Iterable<Vet> entities);
+
+	void delete(Vet entity);
+
+	void deleteAllById(Iterable<Integer> ids);
 }
