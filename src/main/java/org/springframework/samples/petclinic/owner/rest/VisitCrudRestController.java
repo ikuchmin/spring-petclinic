@@ -7,9 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.samples.petclinic.owner.PetRepository;
 import org.springframework.samples.petclinic.owner.Visit;
 import org.springframework.samples.petclinic.owner.VisitMapper;
 import org.springframework.samples.petclinic.owner.VisitRepository;
+import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.samples.petclinic.vet.VetScheduleService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -28,12 +31,20 @@ public class VisitCrudRestController {
 
 	private final ObjectMapper objectMapper;
 
+	private final VetScheduleService vetScheduleService;
+
+	private final PetRepository petRepository;
+
 	public VisitCrudRestController(VisitRepository visitRepository,
 								   VisitMapper visitMapper,
-								   ObjectMapper objectMapper) {
+								   ObjectMapper objectMapper,
+								   VetScheduleService vetScheduleService,
+								   PetRepository petRepository) {
 		this.visitRepository = visitRepository;
 		this.visitMapper = visitMapper;
 		this.objectMapper = objectMapper;
+		this.vetScheduleService = vetScheduleService;
+		this.petRepository = petRepository;
 	}
 
 	@GetMapping
@@ -62,7 +73,14 @@ public class VisitCrudRestController {
 	@PostMapping
 	public VisitCrudRestDto create(@RequestBody @Valid VisitCrudRestDto dto) {
 		Visit visit = visitMapper.toEntity(dto);
+
+		Vet appropriateVet = vetScheduleService.findAppropriateVet(
+			petRepository.getReferenceById(dto.getPetId()), visit);
+
+		visit.setVet(appropriateVet);
+
 		Visit resultVisit = visitRepository.save(visit);
+
 		return visitMapper.toVisitCrudRestDto(resultVisit);
 	}
 

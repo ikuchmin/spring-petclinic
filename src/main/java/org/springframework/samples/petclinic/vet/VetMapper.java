@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.vet;
 import org.mapstruct.*;
 import org.springframework.samples.petclinic.vet.rest.VetCrudRestDto;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,7 @@ public interface VetMapper {
 
 	Vet updateWithNull(VetCrudRestDto vetCrudRestDto, @MappingTarget Vet vet);
 
-	default Set<Integer> specialtiesToSpecialtyIds(Set<Specialty> specialties) {
-		return specialties.stream().map(Specialty::getId).collect(Collectors.toSet());
+	default List<Integer> specialtiesToSpecialtyIds(List<Specialty> specialties) {
+		return specialties.stream().map(Specialty::getId).collect(Collectors.toList());
 	}
 }

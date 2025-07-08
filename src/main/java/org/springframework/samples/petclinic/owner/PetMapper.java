@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.owner;
 import org.mapstruct.*;
 import org.springframework.samples.petclinic.owner.rest.PetCrudRestDto;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public interface PetMapper {
 		return petType;
 	}
 
-	default Set<Integer> visitsToVisitIds(Set<Visit> visits) {
+	default Set<Integer> visitsToVisitIds(Collection<Visit> visits) {
 		return visits.stream().map(Visit::getId).collect(Collectors.toSet());
 	}
 }

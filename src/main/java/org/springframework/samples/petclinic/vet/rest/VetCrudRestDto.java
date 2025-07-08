@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.vet.rest;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.samples.petclinic.vet.Vet;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -15,12 +16,12 @@ public class VetCrudRestDto {
 	private String firstName;
 	@NotBlank
 	private String lastName;
-	private Set<Integer> specialtyIds;
+	private List<Integer> specialtyIds;
 
 	public VetCrudRestDto() {
 	}
 
-	public VetCrudRestDto(Integer id, String firstName, String lastName, Set<Integer> specialtyIds) {
+	public VetCrudRestDto(Integer id, String firstName, String lastName, List<Integer> specialtyIds) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -51,11 +52,11 @@ public class VetCrudRestDto {
 		this.lastName = lastName;
 	}
 
-	public Set<Integer> getSpecialtyIds() {
+	public List<Integer> getSpecialtyIds() {
 		return specialtyIds;
 	}
 
-	public void setSpecialtyIds(Set<Integer> specialtyIds) {
+	public void setSpecialtyIds(List<Integer> specialtyIds) {
 		this.specialtyIds = specialtyIds;
 	}
 

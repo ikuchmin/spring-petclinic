@@ -15,14 +15,22 @@ public class VisitCrudRestDto {
 	@NotBlank
 	private String description;
 
+	private Integer petId;
+	private Integer vetId;
+
+
 	public VisitCrudRestDto() {
 	}
 
-	public VisitCrudRestDto(Integer id, LocalDate date, String description) {
+	public VisitCrudRestDto(Integer id, LocalDate date, String description,
+							Integer petId, Integer vetId) {
 		this.id = id;
 		this.date = date;
 		this.description = description;
+		this.vetId = vetId;
+		this.petId = petId;
 	}
+
 
 	public Integer getId() {
 		return id;
@@ -69,5 +77,21 @@ public class VisitCrudRestDto {
 			"id = " + id + ", " +
 			"date = " + date + ", " +
 			"description = " + description + ")";
+	}
+
+	public Integer getVetId() {
+		return vetId;
+	}
+
+	public void setVetId(Integer vetId) {
+		this.vetId = vetId;
+	}
+
+	public Integer getPetId() {
+		return petId;
+	}
+
+	public void setPetId(Integer petId) {
+		this.petId = petId;
 	}
 }

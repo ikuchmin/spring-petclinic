@@ -69,4 +69,6 @@ public interface VetRepository extends Repository<Vet, Integer>, JpaSpecificatio
 	void delete(Vet entity);
 
 	void deleteAllById(Iterable<Integer> ids);
+
+	List<Vet> findBySpecialties_IdIn(Collection<Integer> ids);
 }
