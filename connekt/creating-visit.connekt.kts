@@ -1,3 +1,5 @@
+import org.assertj.core.api.Assertions.assertThat
+
 val host = "http://localhost:8080"
 
 val petIds by GET("http://localhost:8080/rest/owners") {
@@ -17,7 +19,6 @@ val petIds by GET("http://localhost:8080/rest/owners") {
         ?.split(",")?.map { it.trim().toLong() }!!
 }
 
-@Serializable
 data class Pet(
     val id: Int,
     val name: String,
@@ -33,14 +34,14 @@ GET("http://localhost:8080/rest/pets/by-ids") {
 
     val responseBody = body!!.string()
 
-    val pets = Json.decodeFromString<List<Pet>>(responseBody)
+    //val pets = Json.decodeFromString<List<Pet>>(responseBody)
 
     //val petsRegexp = "\\[(\\{.*\\})+\\]".toRegex()
 //    val petsRegexp = "\\[.*\\]".toRegex()
 //    val pets = petsRegexp.find(responseBody)?.groupValues?.get(0)!!
     //?.split("},{")!!
     // extract Samanta id
-    println("Pets: ${pets[0]}")
+   // println("Pets: ${pets[0]}")
 }
 
 data class VisitResponseDto(
