@@ -2,6 +2,7 @@ package org.springframework.samples.petclinic.owner;
 
 import org.mapstruct.*;
 import org.springframework.samples.petclinic.owner.rest.PetCrudRestDto;
+import org.springframework.samples.petclinic.vet.rest.VisitAppropriateDto;
 
 import java.util.Collection;
 import java.util.Set;
@@ -31,4 +32,9 @@ public interface PetMapper {
 	default Set<Integer> visitsToVisitIds(Collection<Visit> visits) {
 		return visits.stream().map(Visit::getId).collect(Collectors.toSet());
 	}
+
+	Visit toEntity(VisitAppropriateDto visitAppropriateDto);
+
+	@InheritInverseConfiguration(name = "toEntity")
+	VisitAppropriateDto toVisitAppropriateDto(Visit visit);
 }

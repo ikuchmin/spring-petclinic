@@ -31,20 +31,12 @@ public class VisitCrudRestController {
 
 	private final ObjectMapper objectMapper;
 
-	private final VetScheduleService vetScheduleService;
-
-	private final PetRepository petRepository;
-
 	public VisitCrudRestController(VisitRepository visitRepository,
 								   VisitMapper visitMapper,
-								   ObjectMapper objectMapper,
-								   VetScheduleService vetScheduleService,
-								   PetRepository petRepository) {
+								   ObjectMapper objectMapper) {
 		this.visitRepository = visitRepository;
 		this.visitMapper = visitMapper;
 		this.objectMapper = objectMapper;
-		this.vetScheduleService = vetScheduleService;
-		this.petRepository = petRepository;
 	}
 
 	@GetMapping
@@ -73,12 +65,6 @@ public class VisitCrudRestController {
 	@PostMapping
 	public VisitCrudRestDto create(@RequestBody @Valid VisitCrudRestDto dto) {
 		Visit visit = visitMapper.toEntity(dto);
-
-		Vet appropriateVet = vetScheduleService.findAppropriateVet(
-			petRepository.getReferenceById(dto.getPetId()), visit);
-
-		visit.setVet(appropriateVet);
-
 		Visit resultVisit = visitRepository.save(visit);
 
 		return visitMapper.toVisitCrudRestDto(resultVisit);
