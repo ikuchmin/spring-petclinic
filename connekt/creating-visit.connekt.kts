@@ -71,6 +71,9 @@ val createdVisitForSamanta by POST("$host/rest/visits") {
         """.trimIndent()
     )
 } then {
+    // todo: Is it really need to check code to improve exception?
+    assertThat(code).isEqualTo(200)
+
     jsonPath().readLong("$.id")
         .also { assertThat(it).isNotNull }
 }
@@ -79,6 +82,9 @@ GET("$host/rest/visits/{id}") {
     pathParam("id", createdVisitForSamanta)
     header("Content-Type", "application/json")
 } then {
+    // todo: Is it really need to check code to improve exception?
+    assertThat(code).isEqualTo(200)
+
     data class Visit(val id: Int, val date: String, val description: String,
                      val petId: Int, val vetId: Int)
 
