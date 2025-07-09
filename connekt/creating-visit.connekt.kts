@@ -2,28 +2,24 @@
 
 import org.assertj.core.api.Assertions.assertThat
 
-val petIdsRegex = "\"petIds\":\\[(\\d+(?:,\\d+)*)\\]".toRegex()
-val vetIdRegex = "\"id\":(\\d+)".toRegex()
-
-
-
 val host = "http://localhost:8080"
 
 val colemanPets by GET("$host/rest/owners") {
-    queryParam("lastNameContains", "coleman")
+    queryParam("lastNameContains", "colem")
 } then {
     // todo: Is it really need to check code to improve exception?
     assertThat(code).isEqualTo(200)
 
-    //val responseBody = body!!.string()
+    data class Owner(val id: Long, val firstName: String, val lastName: String,
+                     val telephone: String,  val petIds: List<Long>)
 
-    //val contentRegex = "\"content\":\\s*\\[(.*)\\]".toRegex()
-    // todo: Is it really need to check content to improve exception?
-    //val content = contentRegex.find(responseBody)?.groupValues?.get(1)
-    //assertThat(content).isNotBlank
-
-    jsonPath().readList("$.content[0].petIds", Long::class.java)
-        .also { assertThat(it).isNotEmpty }!!
+    jsonPath().readList("$.content", Owner::class.java)
+        .also { assertThat(it).isNotEmpty } // todo: to improve exception
+        .find { it.firstName == "Jean" && it.lastName == "Coleman" }!!
+        .also {
+            assertThat(it.id).isEqualTo(6)
+            assertThat(it.telephone).isEqualTo("6085552654")
+        }.petIds
 }
 
 val samantaAsPet by GET("$host/rest/pets/by-ids") {
@@ -33,7 +29,8 @@ val samantaAsPet by GET("$host/rest/pets/by-ids") {
     assertThat(code).isEqualTo(200)
 
     jsonPath().readList("$[?(@.name == 'Samantha')].id", Long::class.java)
-        .also { assertThat(it).isNotEmpty }.first()
+        .also { assertThat(it).hasSize(1) } // todo: to improve exception
+        .first().also { assertThat(it).isEqualTo(7) }
 }
 
 val vetForSamanta by POST("$host/rest/vets/schedule/appropriate") {
@@ -51,13 +48,14 @@ val vetForSamanta by POST("$host/rest/vets/schedule/appropriate") {
     // todo: Is it really need to check code to improve exception?
     assertThat(code).isEqualTo(200)
 
-    //val responseBody = body!!.string()
+    data class Vet(val id: Long, val firstName: String, val lastName: String, val specialtyIds: List<String>)
 
-    // Assuming the response is a JSON object with a "vetId" field
-    // todo: Produces NPE if no vetId found. Is it ok?
-    //vetIdRegex.find(responseBody)?.groupValues?.get(1)!!
-    jsonPath().readLong("$.vetId")
-        .also { assertThat(it).isNotNull }
+    jsonPath().read("$", Vet::class.java)
+        .also {
+            assertThat(it.id).isEqualTo(3)
+            assertThat(it.firstName).isEqualTo("Linda")
+            assertThat(it.lastName).isEqualTo("Douglas")
+        }.id
 }
 
 val createdVisitForSamanta by POST("$host/rest/visits") {
@@ -73,24 +71,23 @@ val createdVisitForSamanta by POST("$host/rest/visits") {
         """.trimIndent()
     )
 } then {
-
-    val visitIdRegex = "\"id\":(\\d+)".toRegex()
-    val vetIdRegex = "\"vetId\":(\\d+)".toRegex()
-
-    val responseBody = body!!.string()
-
-    val visitId = visitIdRegex.find(responseBody)?.groupValues?.get(1)!!
-    val vetId = vetIdRegex.find(responseBody)?.groupValues?.get(1)!!
-
-    assertThat(visitId).isNotBlank
-    assertThat(vetId).isNotBlank
-
-    visitId
+    jsonPath().readLong("$.id")
+        .also { assertThat(it).isNotNull }
 }
 
-GET("http://localhost:8080/rest/visits/{id}") {
+GET("$host/rest/visits/{id}") {
     pathParam("id", createdVisitForSamanta)
     header("Content-Type", "application/json")
 } then {
+    data class Visit(val id: Int, val date: String, val description: String,
+                     val petId: Int, val vetId: Int)
 
+    jsonPath().read("$", Visit::class.java)
+        .also {
+            assertThat(it.id).isEqualTo(createdVisitForSamanta)
+            assertThat(it.date).isEqualTo("2025-07-07")
+            assertThat(it.description).isEqualTo("Grooming")
+            assertThat(it.petId).isEqualTo(7)
+            assertThat(it.vetId).isEqualTo(vetForSamanta)
+        }
 }
