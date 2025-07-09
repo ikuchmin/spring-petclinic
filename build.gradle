@@ -56,6 +56,8 @@ dependencies {
   checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
   compileOnly 'org.mapstruct:mapstruct:1.6.0'
   annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.0'
+  implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 tasks.named('test') {

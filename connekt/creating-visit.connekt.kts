@@ -15,16 +15,14 @@ val colemanPets by GET("$host/rest/owners") {
     // todo: Is it really need to check code to improve exception?
     assertThat(code).isEqualTo(200)
 
-    val responseBody = body!!.string()
+    //val responseBody = body!!.string()
 
     //val contentRegex = "\"content\":\\s*\\[(.*)\\]".toRegex()
     // todo: Is it really need to check content to improve exception?
     //val content = contentRegex.find(responseBody)?.groupValues?.get(1)
     //assertThat(content).isNotBlank
 
-    // todo: Produces NPE if no petIds found. Is it ok?
-    petIdsRegex.find(responseBody)?.groupValues?.get(1)
-        ?.split(",")?.map { it.trim().toLong() }!!
+    jsonPath().readList("$.content[0].petIds", Long::class.java)
 }
 
 val samantaAsPet by GET("$host/rest/pets/by-ids") {
@@ -44,6 +42,7 @@ val samantaAsPet by GET("$host/rest/pets/by-ids") {
     //?.split("},{")!!
     // extract Samanta id
     // println("Pets: ${pets[0]}")
+    jsonPath().readLong("$.content[0].id")
     val samantaId = 7
     samantaId
 }
