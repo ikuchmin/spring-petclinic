@@ -3,7 +3,9 @@ package org.springframework.samples.petclinic.vet;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.Visit;
+import org.springframework.samples.petclinic.owner.VisitRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,12 +18,17 @@ public class VetScheduleService {
 
 	private final VetRepository vetRepository;
 
-	public VetScheduleService(VetRepository vetRepository) {
+	private final VisitRepository visitRepository;
+
+	public VetScheduleService(VetRepository vetRepository,
+							  VisitRepository visitRepository) {
 		this.vetRepository = vetRepository;
+		this.visitRepository = visitRepository;
 	}
 
+	@Transactional
 	public Vet findAppropriateVet(Pet pet, Visit visit) {
-		List<Visit> visits = pet.getVisits().stream().toList();
+		List<Visit> visits = visitRepository.findWithVetByPet(pet);
 
 		if (visits.isEmpty() || visits.stream().noneMatch(v -> v.getVet() != null)) {
 			return vetRepository.findBySpecialties_IdIn(Collections.singleton(SURGERY_ID))

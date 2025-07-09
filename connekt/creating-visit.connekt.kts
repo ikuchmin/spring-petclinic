@@ -23,6 +23,7 @@ val colemanPets by GET("$host/rest/owners") {
     //assertThat(content).isNotBlank
 
     jsonPath().readList("$.content[0].petIds", Long::class.java)
+        .also { assertThat(it).isNotEmpty }!!
 }
 
 val samantaAsPet by GET("$host/rest/pets/by-ids") {
@@ -31,20 +32,8 @@ val samantaAsPet by GET("$host/rest/pets/by-ids") {
     // todo: Is it really need to check code to improve exception?
     assertThat(code).isEqualTo(200)
 
-    val responseBody = body!!.string()
-
-    // todo: Extract pets from response body and find Samanta's id
-    //val pets = Json.decodeFromString<List<Pet>>(responseBody)
-
-    //val petsRegexp = "\\[(\\{.*\\})+\\]".toRegex()
-//    val petsRegexp = "\\[.*\\]".toRegex()
-//    val pets = petsRegexp.find(responseBody)?.groupValues?.get(0)!!
-    //?.split("},{")!!
-    // extract Samanta id
-    // println("Pets: ${pets[0]}")
-    jsonPath().readLong("$.content[0].id")
-    val samantaId = 7
-    samantaId
+    jsonPath().readList("$[?(@.name == 'Samantha')].id", Long::class.java)
+        .also { assertThat(it).isNotEmpty }.first()
 }
 
 val vetForSamanta by POST("$host/rest/vets/schedule/appropriate") {
@@ -62,11 +51,13 @@ val vetForSamanta by POST("$host/rest/vets/schedule/appropriate") {
     // todo: Is it really need to check code to improve exception?
     assertThat(code).isEqualTo(200)
 
-    val responseBody = body!!.string()
+    //val responseBody = body!!.string()
 
     // Assuming the response is a JSON object with a "vetId" field
     // todo: Produces NPE if no vetId found. Is it ok?
-    vetIdRegex.find(responseBody)?.groupValues?.get(1)!!
+    //vetIdRegex.find(responseBody)?.groupValues?.get(1)!!
+    jsonPath().readLong("$.vetId")
+        .also { assertThat(it).isNotNull }
 }
 
 val createdVisitForSamanta by POST("$host/rest/visits") {
