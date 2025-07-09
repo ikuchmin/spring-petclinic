@@ -2,7 +2,7 @@
 
 import org.assertj.core.api.Assertions.assertThat
 
-val host = "http://localhost:8080"
+val host: String by env
 
 val colemanPets by GET("$host/rest/owners") {
     queryParam("lastNameContains", "colem")
