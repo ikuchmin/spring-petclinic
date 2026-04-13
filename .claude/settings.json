@@ -1,0 +1,6 @@
+{
+  "enabledPlugins": {
+    "spring-tools@spring-tools": true,
+    "planning@umputun-cc-thingz": true
+  }
+}
